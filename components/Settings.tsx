@@ -73,7 +73,15 @@ export default function Settings() {
       try {
         const subscription = await subscribeToPushNotifications();
         if (subscription) {
-          // Подписка успешна, можно отправить на сервер (по желанию)
+          // Отправим подписку на сервер, чтобы сервер мог отправлять push
+          await fetch('/api/subscribe', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(subscription),
+          });
+
           // eslint-disable-next-line no-console
           console.log('Push subscription successful:', subscription);
         }

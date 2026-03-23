@@ -59,6 +59,19 @@ export default function Timer() {
             handleOnComplete();
             finishedSfx();
             sendTimerCompleteNotification();
+            fetch('/api/send-notification', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                title: 'Pomodoro завершен!',
+                body: 'Перерыв начался. Отличная работа! ⏰',
+              }),
+            }).catch((error) => {
+              // eslint-disable-next-line no-console
+              console.error('Failed to send push notification via API:', error);
+            });
           }}
         >
           {({ remainingTime }) => (
@@ -81,6 +94,19 @@ export default function Timer() {
             handleOnComplete();
             finishedSfx();
             sendTimerCompleteNotification();
+            fetch('/api/send-notification', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                title: 'Pomodoro завершен!',
+                body: 'Перерыв начался. Отличная работа! ⏰',
+              }),
+            }).catch((error) => {
+              // eslint-disable-next-line no-console
+              console.error('Failed to send push notification via API:', error);
+            });
           }}
         >
           {({ remainingTime }) => (
