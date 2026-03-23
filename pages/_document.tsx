@@ -73,7 +73,11 @@ export default function Document() {
           sizes='16x16'
           href='/favicon-16x16.png'
         />
-        <link rel='manifest' href='/site.webmanifest' />
+        <link rel='manifest' href='/manifest.json' />
+        <meta name='theme-color' content='#F87070' />
+        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
+        <meta name='apple-mobile-web-app-title' content='Pomodoro' />
       </Head>
       <body>
         <Main />

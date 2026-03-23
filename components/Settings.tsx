@@ -16,6 +16,8 @@ import ColorsList from './ColorsList';
 import {
   getNotificationPermission,
   requestNotificationPermission,
+  subscribeToPushNotifications,
+  isServiceWorkerSupported,
 } from '../utils/notification';
 
 // Assets
@@ -65,6 +67,21 @@ export default function Settings() {
   const handleEnableNotifications = async () => {
     const permission = await requestNotificationPermission();
     setNotificationPermission(permission);
+
+    // Если разрешение получено и Service Worker готов, подписываемся на push
+    if (permission === 'granted' && isServiceWorkerSupported()) {
+      try {
+        const subscription = await subscribeToPushNotifications();
+        if (subscription) {
+          // Подписка успешна, можно отправить на сервер (по желанию)
+          // eslint-disable-next-line no-console
+          console.log('Push subscription successful:', subscription);
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Failed to subscribe to push:', error);
+      }
+    }
   };
 
   const groupVariants: Variants = {
