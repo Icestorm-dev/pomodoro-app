@@ -12,6 +12,7 @@ import TimerDisplay from './TimerDisplay';
 
 // Utils
 import { convertMinutesToSeconds } from '../utils/helpers';
+import { sendTimerCompleteNotification } from '../utils/notification';
 
 export default function Timer() {
   const { color } = useContext(StyleContext);
@@ -57,6 +58,7 @@ export default function Timer() {
           onComplete={() => {
             handleOnComplete();
             finishedSfx();
+            sendTimerCompleteNotification();
           }}
         >
           {({ remainingTime }) => (
@@ -78,6 +80,7 @@ export default function Timer() {
           onComplete={() => {
             handleOnComplete();
             finishedSfx();
+            sendTimerCompleteNotification();
           }}
         >
           {({ remainingTime }) => (

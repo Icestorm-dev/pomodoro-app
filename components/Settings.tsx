@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
@@ -11,6 +11,12 @@ import { SoundsContext } from '../contexts/SoundsContext';
 import TimeInputs from './TimeInputs';
 import FontsList from './FontsList';
 import ColorsList from './ColorsList';
+
+// Utils
+import {
+  getNotificationPermission,
+  requestNotificationPermission,
+} from '../utils/notification';
 
 // Assets
 import settingsIcon from '../public/assets/icon-settings.svg';
@@ -29,6 +35,12 @@ export default function Settings() {
     disableSfx,
   } = useContext(SoundsContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
+
+  useEffect(() => {
+    setNotificationPermission(getNotificationPermission());
+  }, []);
+
 
   const handelOpen = () => {
     playSwitchOnSfx();
@@ -48,6 +60,11 @@ export default function Settings() {
   const handleVolumeOff = () => {
     setVolume(0);
     disableSfx();
+  };
+
+  const handleEnableNotifications = async () => {
+    const permission = await requestNotificationPermission();
+    setNotificationPermission(permission);
   };
 
   const groupVariants: Variants = {
@@ -70,7 +87,7 @@ export default function Settings() {
 
   return (
     <>
-      <div className='mt-8 flex items-center justify-center gap-4'>
+      <div className='mt-8 flex flex-wrap items-center justify-center gap-4'>
         <button
           type='button'
           onClick={handelOpen}
@@ -88,6 +105,15 @@ export default function Settings() {
           ) : (
             <Image src={muteIcon} alt='mute' />
           )}
+        </button>
+        <button
+          type='button'
+          onClick={handleEnableNotifications}
+          className='rounded-full bg-primary-dark px-4 py-2 text-xs text-white transition hover:bg-secondary focus:outline-dashed focus:outline-tertiary'
+        >
+          {notificationPermission === 'granted' && 'Уведомления включены'}
+          {notificationPermission === 'denied' && 'Уведомления запрещены'}
+          {notificationPermission === 'default' && 'Включить уведомления'}
         </button>
       </div>
 
